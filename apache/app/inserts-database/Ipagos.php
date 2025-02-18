@@ -9,22 +9,20 @@
   $CodigoBarras = $_POST['CodigoBarras'];
 
   $SQL = "INSERT INTO pagos(id, transaccion, folio, fechaLimPago, Importe, TipoPago, FechayHora, CodigoBarras) VALUES('$id', '$transaccion', '$folio', '$fechaLimPago', '$Importe', '$TipoPago', '$FechayHora', '$CodigoBarras');";
-  $host = "localhost";
+  
+  $servername = "localhost";
   $username = "root";
   $password = "";
-  $database = "controlvehicular31";
+  $dbname = "controlvehicular31";
 
-  $conn = mysqli_connect($host, $username, $password, $database);
+  $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
 
-  if ($conn == 0) {
-    print("No se pudo conectar a la base de datos");
-  }
-  $resultSet = mysqli_query($SQL);
-  mysqli_close($conn);
-  if ($resultSet == 1){
-    print("Consulta realizada correctamente");
+  $ResultSet = mysqli_query($conn, $SQL); // Execute the query
+  mysqli_close($conn); // Close the connection
+  if($ResultSet == 1){
+      print("Actualizado correctamente"); //Process the result
   }
   else{
-    print("Error al ejecutar la consulta: ".$resultSet->error);
+      print("Error al actualizar".$ResultSet->error);
   }
 ?>

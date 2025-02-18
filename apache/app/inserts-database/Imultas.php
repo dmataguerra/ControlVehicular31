@@ -15,22 +15,19 @@
   $FechaHora = $_REQUEST['FechaHora'];
 
   $SQL = "INSERT INTO multas(FolioMultas, IdPago, FolioVerificacion, FolioCirculacion, IdSerie, IdOficial, Causa, Observaciones, Region, FechaExp, Estado, Descripcion, Tipo, FechaHora) VALUES('$FolioMultas', '$IdPago', '$FolioVerificacion', '$FolioCirculacion', '$IdSerie', '$IdOficial', '$Causa', '$Observaciones', '$Region', '$FechaExp', '$Estado', '$Descripcion', '$Tipo', '$FechaHora');";
-  $host = "localhost";
+  $servername = "localhost";
   $username = "root";
   $password = "";
-  $database = "controlvehicular31";
+  $dbname = "controlvehicular31";
 
-  $conn = mysqli_connect($host, $username, $password, $database);
+  $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
 
-  if ($conn == 0) {
-    print("No se pudo conectar a la base de datos");
-  }
-  $resultSet = mysqli_query($SQL);
-  mysqli_close($conn);
-  if ($resultSet == 1){
-    print("Consulta realizada correctamente");
+  $ResultSet = mysqli_query($conn, $SQL); // Execute the query
+  mysqli_close($conn); // Close the connection
+  if($ResultSet == 1){
+      print("Actualizado correctamente"); //Process the result
   }
   else{
-    print("Error al ejecutar la consulta: ".$resultSet->error);
+      print("Error al actualizar".$ResultSet->error);
   }
 ?>
