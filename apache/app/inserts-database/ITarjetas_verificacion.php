@@ -1,4 +1,5 @@
 <?php
+  include("Controlador.php");
   $FolioVerificacion = $_GET['FolioVerificacion'];
   $HoraSalida = $_GET['HoraSalida'];
   $MotivoVerificacion = $_GET['MotivoVerificacion'];
@@ -12,14 +13,11 @@
   $IdPago = $_GET['IdPago'];
 
   $SQL = "INSERT INTO tarjetas_verificacion(FolioVerificacion, HoraSalida, MotivoVerificacion, FolioCertificado, Semestre, TipoServicio, FechaExp, HoraEntrada, IdCentro, IdSerie, IdPago) VALUES('$FolioVerificacion', '$HoraSalida', '$MotivoVerificacion', '$FolioCertificado', '$Semestre', '$TipoServicio', '$FechaExp', '$HoraEntrada', '$IdCentro', '$IdSerie', '$IdPago');";
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "controlvehicular31";
+  
+  $conn = Conectar(); // Create connection
 
-  $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
-
-  $ResultSet = mysqli_query($conn, $SQL); // Execute the query
+  $ResultSet = Ejecutar($conn,$SQL);// Execute the query
+  
   mysqli_close($conn); // Close the connection
   if($ResultSet == 1){
       print("Actualizado correctamente"); //Process the result

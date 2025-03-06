@@ -1,17 +1,13 @@
 <?php
+    include("Controlador.php");
   $IdPropietario = $_GET['IdPropietario'];
   $CURP = $_GET['CURP'];
 
   $SQL = "INSERT INTO propietarios(IdPropietario, CURP) VALUES('$IdPropietario', '$CURP');";
 
-  $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "controlvehicular31";
+    $conn =  Conectar(); // Create connection
 
-    $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
-
-    $ResultSet = mysqli_query($conn, $SQL); // Execute the query
+    $ResultSet = Ejecutar($conn,$SQL);// Execute the query
     mysqli_close($conn); // Close the connection
     if($ResultSet == 1){
         print("Actualizado correctamente"); //Process the result

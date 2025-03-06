@@ -1,4 +1,5 @@
 <?php
+  include("Controlador.php");
   $id = $_POST['id'];
   $transaccion = $_POST['transaccion'];
   $folio = $_POST['folio'];
@@ -10,14 +11,8 @@
 
   $SQL = "INSERT INTO pagos(id, transaccion, folio, fechaLimPago, Importe, TipoPago, FechayHora, CodigoBarras) VALUES('$id', '$transaccion', '$folio', '$fechaLimPago', '$Importe', '$TipoPago', '$FechayHora', '$CodigoBarras');";
   
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "controlvehicular31";
-
-  $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
-
-  $ResultSet = mysqli_query($conn, $SQL); // Execute the query
+  $conn =  Conectar(); // Create connection
+  $ResultSet = Ejecutar($conn,$SQL);// Execute the query
   mysqli_close($conn); // Close the connection
   if($ResultSet == 1){
       print("Actualizado correctamente"); //Process the result

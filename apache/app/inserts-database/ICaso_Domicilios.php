@@ -1,25 +1,18 @@
 <?php
+    include("Controlador.php");
     $compuesta = $_POST['compuesta'];
     $CURP = $_POST['CURP'];
     $IdDomicilio = $_POST['IdDomicilio'];
 
-    /*print("Compuesta: ".$compuesta."<br>");
-    print("CURP: ".$CURP."<br>");
-    print("IdDomicilio: ".$IdDomicilio."<br>");*/
 
     $SQL = "INSERT INTO caso_domicilios VALUES('$compuesta','$CURP','$IdDomicilio');";
-    //print($SQL);  
+    
+    $conn = Conectar();
 
-    //Connection details
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "controlvehicular31";
+    $ResultSet = Ejecutar($conn,$SQL);
 
-    $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
+    mysqli_close($conn);
 
-    $ResultSet = mysqli_query($conn, $SQL); // Execute the query
-    mysqli_close($conn); // Close the connection
     if($ResultSet == 1){
         print("Actualizado correctamente"); //Process the result
     }
