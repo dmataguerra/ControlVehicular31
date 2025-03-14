@@ -13,6 +13,6 @@
   }
   else{
     print("1 registro(s) eliminado(s)");
-}
- mysqli_close($conn);
+  }
+  mysqli_close($conn);
 ?>
