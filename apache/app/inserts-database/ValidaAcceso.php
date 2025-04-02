@@ -1,33 +1,58 @@
 <?php
-  include("controlador.php");
-  $UserName = $_REQUEST['UserName'];
-  $Password = $_REQUEST['Password'];
-  $SQL = "SELECT * FROM usuarios WHERE UserName = '$UserName'";
-  $conn = Conectar();
-  $resultSet = Ejecutar($conn, $SQL);
-  $row = mysqli_fetch_row($resultSet);
-  $n = mysqli_num_rows($resultSet);
+include("controlador.php");
 
-  if($n == 0){
-    print("Usuario o contrasena incorretos");
-  }
+$UserName = $_REQUEST['UserName'];
+$Password = $_REQUEST['Password'];
+$conn = Conectar();
 
-  else{
-  print("El usuario existe<br>");
-  if($row[1] == $Password){
-    print("Contrasena correcta");
-    if($row[3] == "1" && $row[4] == "0"){
-      print("<br>Bienvenido Usuario Tipo ".$row[2]);
+// Obtener los datos del usuario
+$SQL = "SELECT * FROM usuarios WHERE username = '$UserName'";
+$resultSet = Ejecutar($conn, $SQL);
+$row = mysqli_fetch_assoc($resultSet);
+$n = mysqli_num_rows($resultSet);
+
+if ($n == 0) {
+    die("Usuario o contraseña incorrectos");
+}
+
+if ($row['bloqueo'] == 1) {
+    die("Usuario bloqueado");
+}
+
+if ($row['status'] == 0) {
+    die("Status no autorizado");
+}
+
+print("El usuario existe<br>");
+
+$contador = $row['intento'];
+
+if ($row['password'] == $Password) {
+    print("Contraseña correcta");
+
+    $SQL = "UPDATE usuarios SET intento = 0 WHERE username = '$UserName'";
+    Ejecutar($conn, $SQL);
+    if($row['tipo'] == 'A'){
+    header("Location:../formularios/MenuA.html");
+    }else if ($row['tipo'] == 'U'){ 
+    header("Location:../formularios/MenuU.html");
     }
-    else{
-      print("<br>Usuario no autorizado");
+} else {
+  $contador++;     
+  $intentos_restantes = 3 - $contador;
+
+    print("Contraseña incorrecta<br>Le quedan $intentos_restantes intentos");
+
+    $SQL = "UPDATE usuarios SET intento = $contador WHERE username = '$UserName'";
+    Ejecutar($conn, $SQL);
+
+    if ($contador >= 3) {
+        $SQL = "UPDATE usuarios SET bloqueo = 1 WHERE username = '$UserName'";
+        Ejecutar($conn, $SQL);
+        die("<br>Usuario bloqueado por demasiados intentos fallidos.");
     }
-  }
+}
 
-  else{
-    print("Contrasena incorrecta");
-  }
-  }
-
-  mysqli_close($conn);
+mysqli_close($conn);
 ?>
+

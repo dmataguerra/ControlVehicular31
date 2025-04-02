@@ -26,11 +26,8 @@ mysqli_close($conn);
         <input type="text" name="CURP" id="CURP" value="<?php echo htmlspecialchars($row[1]); ?>"> 
         <br>
         <input type="submit" value="Update">
-</form>
-       
+        </form> 
     </main>
-    <footer>
-    </footer>
   </body>
 </html>
 
